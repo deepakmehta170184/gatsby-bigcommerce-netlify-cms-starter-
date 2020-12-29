@@ -50,6 +50,9 @@ const Login = () => {
                 <p className="forgot-password text-right">
                     Forgot <a href="#">password?</a>
                 </p>
+                <p className="forgot-password text-right">
+                    <a href="/register">Signup?</a>
+                </p>
             </form>
 		</>
 	);

@@ -1,3 +1,18 @@
+const netlifyInstance = "https://5fe769d611f3282ec6c9cab5--gatsby-demo-site.netlify.app"
+if (netlifyInstance === "https://5fe769d611f3282ec6c9cab5--gatsby-demo-site.netlify.app") {
+  console.warn(`
+
+**************************
+WARNING: currently using Netlify Identity of https://5fe769d611f3282ec6c9cab5--gatsby-demo-site.netlify.app
+
+this is only meant for the working demo. if you forked or copied this code, you won't have access to this netlify identity instance
+
+Go to your site, enable Netlify Identity, and paste that string here
+
+
+**************************
+`)
+}
 var proxy = require('http-proxy-middleware');
 require('dotenv').config();
 
@@ -9,6 +24,10 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: `gatsby-plugin-netlify-identity`,
+      options: {
+        url: netlifyInstance // required!
+      },
       resolve: 'gatsby-source-bigcommerce',
       options: {
         // REQUIRED
@@ -23,7 +42,11 @@ module.exports = {
         }
       }
     },
-    'gatsby-plugin-react-helmet',
+    `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/app/*`] },
+    },
     'gatsby-plugin-sass',
     {
       // keep as first gatsby-source-filesystem plugin for gatsby image support

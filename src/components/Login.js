@@ -1,56 +1,29 @@
 import React from "react";
-import { navigate } from "gatsby";
-import { handleLogin, isLoggedIn } from "../services/auth";
+import IdentityModal, { useIdentityContext } from "react-netlify-identity-widget"
+import "react-netlify-identity-widget/styles.css" // delete if you want to bring your own CSS
 
-class Login extends React.Component {
-  state = {
-    username: ``,
-    password: ``,
-  }
+const Login = ({ children }) => {
+  const identity = useIdentityContext()
+  const [dialog, setDialog] = React.useState(false)
+  const name =
+    (identity && identity.user && identity.user.user_metadata && identity.user.user_metadata.name) || "NoName"
 
-  handleUpdate = event => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    })
-  }
-
-  handleSubmit = event => {
-    event.preventDefault()
-    handleLogin(this.state)
-  }
-
-  render() {
-    if (isLoggedIn()) {
-      navigate(`/app/profile`)
-    }
-
-    return (
-      <>
-        <h1>Log in</h1>
-        <form
-          method="post"
-          onSubmit={event => {
-            this.handleSubmit(event)
-            navigate(`/app/profile`)
-          }}
-        >
-          <label>
-            Username
-            <input type="text" name="username" onChange={this.handleUpdate} />
-          </label>
-          <label>
-            Password
-            <input
-              type="password"
-              name="password"
-              onChange={this.handleUpdate}
-            />
-          </label>
-          <input type="submit" value="Log In" />
-        </form>
-      </>
-    )
-  }
+  console.log(JSON.stringify(identity))
+  const isLoggedIn = identity && identity.isLoggedIn
+  return (
+    <>
+      <nav style={{ background: "green" }}>
+        {" "}
+        Login Status:
+        <button className="btn" onClick={() => setDialog(true)}>
+          {isLoggedIn ? `Hello ${name}, Log out here!` : "LOG IN"}
+        </button>
+      </nav>
+      <main>{children}</main>
+      <IdentityModal showDialog={dialog} onCloseDialog={() => setDialog(false)} />
+    </>
+  )
 }
+
 
 export default Login

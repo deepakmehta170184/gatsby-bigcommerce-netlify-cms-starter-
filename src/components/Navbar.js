@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'gatsby';
 import github from '../img/github-icon.svg';
 import logo from '../img/logo-header.png';
-
 import CartContext from '../context/CartProvider';
 
 const Navbar = class extends React.Component {
