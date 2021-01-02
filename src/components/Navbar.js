@@ -34,7 +34,7 @@ const Navbar = class extends React.Component {
   };
 
   render() {
-
+console.log("API_STORE_HASH----",process.env.API_STORE_HASH)
     return (
       <nav
         className="navbar is-transparent"

@@ -17,6 +17,10 @@ var proxy = require('http-proxy-middleware');
 require('dotenv').config();
 
 module.exports = {
+  proxy: {
+    prefix: "/stores",
+    url: "https://api.bigcommerce.com",
+  },
   siteMetadata: {
     title: 'Gatsby + BigCommerce + Netlify CMS Starter',
     description:
@@ -27,7 +31,9 @@ module.exports = {
       resolve: `gatsby-plugin-netlify-identity`,
       options: {
         url: netlifyInstance // required!
-      },
+      }
+    },
+    {
       resolve: 'gatsby-source-bigcommerce',
       options: {
         // REQUIRED
