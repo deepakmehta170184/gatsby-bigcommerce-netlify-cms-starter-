@@ -1,13 +1,56 @@
+import netlifyIdentity from 'netlify-identity-widget';
 export const isBrowser = () => typeof window !== "undefined"
+
+
+// for temporarily cache in client
+// @2018/12/21
+const GlobalObj = {};
+Object.defineProperty(GlobalObj, 'pathname', {value: '/', writable: true});
+
+
+
+// 1. check log status
+export const isLoggedIn = () => {
+  // const user = getUser()
+  if(typeof netlifyIdentity.currentUser !== `undefined`){
+    return !!netlifyIdentity.currentUser();
+  }
+  return false
+}
+// 2. log in
+export const loginNI = callback => {
+  console.log('jjjjj')
+  netlifyIdentity.open()
+  netlifyIdentity.on('login', (user)=>{
+    netlifyIdentity.close()
+    callback(user)
+  })
+}
+
+// 3. log out
+export const logoutNI = callback => {
+  netlifyIdentity.logout();
+  netlifyIdentity.on('logout', callback)
+}
+
+// 4. get user data
 export const getUser = () =>
-  isBrowser() && window.localStorage.getItem("gatsbyUser")
-    ? JSON.parse(window.localStorage.getItem("gatsbyUser"))
+  isBrowser() && netlifyIdentity.currentUser()
+    ? netlifyIdentity.currentUser()
     : {}
-const setUser = user =>
+
+// 5. save pathname
+export const setPathname = path => GlobalObj.pathname = path
+
+// 6. get pathname
+export const getPathname = () => GlobalObj.pathname
+
+export const setUser = user => {
   window.localStorage.setItem("gatsbyUser", JSON.stringify(user))
-export const handleLogin = ( username, password ) => {
-    console.log('username---',username);
-    console.log('password---',password);
+  return true;
+}
+
+export const handleLogin = ({ username, password }) => {
   if (username === `john` && password === `pass`) {
     return setUser({
       username: `john`,
@@ -15,13 +58,6 @@ export const handleLogin = ( username, password ) => {
       email: `johnny@example.org`,
     })
   }
+
   return false
-}
-export const isLoggedIn = () => {
-  const user = getUser()
-  return !!user.username
-}
-export const logout = callback => {
-  setUser({})
-  callback()
 }

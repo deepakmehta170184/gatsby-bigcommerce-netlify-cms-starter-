@@ -27,12 +27,12 @@ module.exports = {
       'This repo contains an example ecommerce website that is built with Gatsby, BigCommerce and Netlify CMS. It follows the JAMstack architecture by using Git as a single source of truth for content, BigCommerce for catalog / cart / checkout, and Netlify for continuous deployment.'
   },
   plugins: [
-    {
-      resolve: `gatsby-plugin-netlify-identity`,
-      options: {
-        url: netlifyInstance // required!
-      }
-    },
+    // {
+    //   resolve: `gatsby-plugin-netlify-identity`,
+    //   options: {
+    //     url: netlifyInstance // required!
+    //   }
+    // },
     {
       resolve: 'gatsby-source-bigcommerce',
       options: {

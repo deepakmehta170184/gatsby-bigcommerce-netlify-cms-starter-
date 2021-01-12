@@ -6,20 +6,10 @@ import Notify from './bigcommerce/Notify';
 import './all.sass';
 import './Layout.css';
 import useSiteMetadata from './SiteMetadata';
-import IdentityModal, { useIdentityContext } from "react-netlify-identity-widget"
-import "react-netlify-identity-widget/styles.css" // delete if you want to bring your own CSS
-
-
 
 const TemplateWrapper = ({ children }) => {
   const { title, description } = useSiteMetadata();
-  const identity = useIdentityContext();
-  const [dialog, setDialog] = useState(false);
-  const name =
-  (identity && identity.user && identity.user.user_metadata && identity.user.user_metadata.name) || "NoName"
-
-console.log(JSON.stringify(identity))
-const isLoggedIn = identity && identity.isLoggedIn
+  
   return (
     <div>
       <Helmet>
@@ -60,16 +50,7 @@ const isLoggedIn = identity && identity.isLoggedIn
       </Helmet>
       <Notify />
       <Navbar />
-      {/* <div>{children}</div> */}
-      <nav style={{ background: "green" }}>
-        {" "}
-        Login Status:
-        <button className="btn" onClick={() => setDialog(true)}>
-          {isLoggedIn ? `Hello ${name}, Log out here!` : "LOG IN"}
-        </button>
-      </nav>
-      <main>{children}</main>
-      <IdentityModal showDialog={dialog} onCloseDialog={() => setDialog(false)} />
+      <div>{children}</div>
       <Footer />
     </div>
   );
